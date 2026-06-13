@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Enterprise RAG Quality Workbench</title>
+    <title>企业 RAG 质量工作台</title>
     <style>
       :root {
         color-scheme: light;
@@ -102,41 +102,41 @@
   </head>
   <body>
     <header>
-      <span class="pill pass status">Launch pass</span>
-      <h1>Enterprise RAG Quality Workbench</h1>
-      <p>Product-facing scorecards and failure review for EnterpriseRAG-Bench answer evaluation artifacts.</p>
-      <p class="muted">Generated 2026-06-13T09:33:35.267626+00:00</p>
+      <span class="pill pass status">上线通过</span>
+      <h1>企业 RAG 质量工作台</h1>
+      <p>把 EnterpriseRAG-Bench 的回答评测产物转成面向产品决策的评分卡、质量门禁和失败案例复盘。</p>
+      <p class="muted">生成时间 2026-06-13T10:03:29.115044+00:00</p>
     </header>
     <main>
       <section>
-        <h2>Launch Scorecard</h2>
+        <h2>上线评分卡</h2>
         <div class="cards">
-          <div class="card"><span>Questions scored</span><strong>5</strong></div>
-          <div class="card"><span>Correctness</span><strong>80.0%</strong></div>
-          <div class="card"><span>Completeness</span><strong>80.0%</strong></div>
-          <div class="card"><span>Document recall</span><strong>75.0%</strong></div>
-          <div class="card"><span>Avg invalid extra docs</span><strong>0.50</strong></div>
-          <div class="card"><span>Launch-blocking failures</span><strong>1</strong></div>
+          <div class="card"><span>已评分问题</span><strong>5</strong></div>
+          <div class="card"><span>正确性</span><strong>80.0%</strong></div>
+          <div class="card"><span>完整性</span><strong>80.0%</strong></div>
+          <div class="card"><span>文档召回</span><strong>75.0%</strong></div>
+          <div class="card"><span>平均无效额外文档</span><strong>0.50</strong></div>
+          <div class="card"><span>上线阻断失败</span><strong>1</strong></div>
         </div>
       </section>
 
       <section>
-        <h2>Quality Gates</h2>
+        <h2>质量门禁</h2>
         <table>
-          <thead><tr><th>Gate</th><th>Status</th><th>Actual vs threshold</th></tr></thead>
-          <tbody><tr><td>min_correctness_pct</td><td><span class="pill pass">pass</span></td><td>80.00 &gt;= 75.00</td></tr>
-<tr><td>min_completeness_pct</td><td><span class="pill pass">pass</span></td><td>80.00 &gt;= 75.00</td></tr>
-<tr><td>min_document_recall_pct</td><td><span class="pill pass">pass</span></td><td>75.00 &gt;= 75.00</td></tr>
-<tr><td>max_invalid_extra_docs_avg</td><td><span class="pill pass">pass</span></td><td>0.50 &lt;= 0.80</td></tr>
-<tr><td>max_launch_blocking_failures</td><td><span class="pill pass">pass</span></td><td>1.00 &lt;= 1.00</td></tr></tbody>
+          <thead><tr><th>门禁</th><th>状态</th><th>实际值 vs 阈值</th></tr></thead>
+          <tbody><tr><td>最低正确性</td><td><span class="pill pass">通过</span></td><td>80.00 &gt;= 75.00</td></tr>
+<tr><td>最低完整性</td><td><span class="pill pass">通过</span></td><td>80.00 &gt;= 75.00</td></tr>
+<tr><td>最低文档召回率</td><td><span class="pill pass">通过</span></td><td>75.00 &gt;= 75.00</td></tr>
+<tr><td>平均无效额外文档上限</td><td><span class="pill pass">通过</span></td><td>0.50 &lt;= 0.80</td></tr>
+<tr><td>上线阻断失败数上限</td><td><span class="pill pass">通过</span></td><td>1.00 &lt;= 1.00</td></tr></tbody>
         </table>
       </section>
 
       <section>
-        <h2>Category Scorecards</h2>
+        <h2>类别评分卡</h2>
         <table>
           <thead>
-            <tr><th>Category</th><th>Count</th><th>Correctness</th><th>Completeness</th><th>Recall</th><th>Invalid docs</th><th>Blocking</th></tr>
+            <tr><th>类别</th><th>数量</th><th>正确性</th><th>完整性</th><th>召回率</th><th>无效文档</th><th>阻断</th></tr>
           </thead>
           <tbody><tr><td>basic</td><td>1</td><td>100.0%</td><td>100.0%</td><td>100.0%</td><td>0.00</td><td>0</td></tr>
 <tr><td>completeness</td><td>1</td><td>100.0%</td><td>75.0%</td><td>50.0%</td><td>0.00</td><td>0</td></tr>
@@ -146,22 +146,22 @@
         </table>
       </section>
 
-      <section><h2>Comparative Snapshot</h2><div class="cards"><div class="card"><span>System 1 preferred</span><strong>60.0%</strong></div><div class="card"><span>System 2 preferred</span><strong>40.0%</strong></div><div class="card"><span>Tie rate</span><strong>40.0%</strong></div></div></section>
+      <section><h2>对比快照</h2><div class="cards"><div class="card"><span>系统 1 胜出</span><strong>60.0%</strong></div><div class="card"><span>系统 2 胜出</span><strong>40.0%</strong></div><div class="card"><span>打平比例</span><strong>40.0%</strong></div></div></section>
 
       <section>
-        <h2>Failure Drilldown</h2>
+        <h2>失败案例明细</h2>
         <div class="filters">
-          <label>Risk<br />
+          <label>风险<br />
             <select id="riskFilter">
-              <option value="">All</option>
-              <option value="high">High</option>
-              <option value="medium">Medium</option>
-              <option value="low">Low</option>
+              <option value="">全部</option>
+              <option value="high">高风险</option>
+              <option value="medium">中风险</option>
+              <option value="low">低风险</option>
             </select>
           </label>
-          <label>Category<br />
+          <label>类别<br />
             <select id="categoryFilter">
-              <option value="">All</option>
+              <option value="">全部</option>
               <option value="basic">basic</option>
 <option value="completeness">completeness</option>
 <option value="conflicting_info">conflicting_info</option>
@@ -169,16 +169,16 @@
 <option value="semantic">semantic</option>
             </select>
           </label>
-          <label>Metric contains<br />
-            <input id="metricFilter" placeholder="correctness, recall..." />
+          <label>指标包含<br />
+            <input id="metricFilter" placeholder="正确性、召回、correctness..." />
           </label>
         </div>
         <table id="failures">
           <thead>
-            <tr><th>ID</th><th>Category</th><th>Risk</th><th>Failed metrics</th><th>Completeness</th><th>Recall</th><th>Invalid docs</th><th>Details</th></tr>
+            <tr><th>ID</th><th>类别</th><th>风险</th><th>失败指标</th><th>完整性</th><th>召回率</th><th>无效文档</th><th>详情</th></tr>
           </thead>
-          <tbody><tr data-risk="high" data-category="conflicting_info" data-metrics="correctness, completeness, document_recall"><td>qst_demo_005</td><td>conflicting_info</td><td><span class="pill high">high</span></td><td>correctness, completeness, document_recall</td><td>25.0%</td><td>50.0%</td><td>1</td><td><details><summary>Question and answer</summary><p><strong>Q:</strong> What is the current escalation owner for EU failover incidents?</p><p><strong>A:</strong> The escalation owner is still the support rotation lead.</p><p><strong>Docs:</strong> dsid_failover_runbook</p></details></td></tr>
-<tr data-risk="medium" data-category="completeness" data-metrics="document_recall"><td>qst_demo_003</td><td>completeness</td><td><span class="pill medium">medium</span></td><td>document_recall</td><td>75.0%</td><td>50.0%</td><td>0</td><td><details><summary>Question and answer</summary><p><strong>Q:</strong> List all required launch checks before enabling customer-facing RAG answers.</p><p><strong>A:</strong> Before launch, review retrieval recall, answer correctness, and support escalation notes.</p><p><strong>Docs:</strong> dsid_launch_checks</p></details></td></tr></tbody>
+          <tbody><tr data-risk="high" data-category="conflicting_info" data-metrics="correctness, completeness, document_recall 正确性, 完整性, 文档召回"><td>qst_demo_005</td><td>conflicting_info</td><td><span class="pill high">高风险</span></td><td>正确性, 完整性, 文档召回</td><td>25.0%</td><td>50.0%</td><td>1</td><td><details><summary>问题与回答</summary><p><strong>问题：</strong> What is the current escalation owner for EU failover incidents?</p><p><strong>回答：</strong> The escalation owner is still the support rotation lead.</p><p><strong>文档：</strong> dsid_failover_runbook</p></details></td></tr>
+<tr data-risk="medium" data-category="completeness" data-metrics="document_recall 文档召回"><td>qst_demo_003</td><td>completeness</td><td><span class="pill medium">中风险</span></td><td>文档召回</td><td>75.0%</td><td>50.0%</td><td>0</td><td><details><summary>问题与回答</summary><p><strong>问题：</strong> List all required launch checks before enabling customer-facing RAG answers.</p><p><strong>回答：</strong> Before launch, review retrieval recall, answer correctness, and support escalation notes.</p><p><strong>文档：</strong> dsid_launch_checks</p></details></td></tr></tbody>
         </table>
       </section>
     </main>
