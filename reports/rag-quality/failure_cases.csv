@@ -1,0 +1,3 @@
+question_id,question_type,risk,failed_metrics,answer_correct,completeness_pct,document_recall_pct,invalid_extra_docs,retrieved_document_ids,question,answer
+qst_demo_005,conflicting_info,high,correctness;completeness;document_recall,False,25.0,50.0,1,dsid_failover_runbook,What is the current escalation owner for EU failover incidents?,The escalation owner is still the support rotation lead.
+qst_demo_003,completeness,medium,document_recall,True,75.0,50.0,0,dsid_launch_checks,List all required launch checks before enabling customer-facing RAG answers.,"Before launch, review retrieval recall, answer correctness, and support escalation notes."

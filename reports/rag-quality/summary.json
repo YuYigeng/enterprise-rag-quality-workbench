@@ -1,0 +1,169 @@
+{
+  "aggregate": {
+    "average_completeness_pct": 80.0,
+    "average_correctness_pct": 80.0,
+    "average_invalid_extra_docs": 0.5,
+    "average_recall_pct": 75.0,
+    "completed_questions": 5,
+    "launch_blocking_failures": 1
+  },
+  "category_scorecards": [
+    {
+      "average_completeness_pct": 100.0,
+      "average_document_recall_pct": 100.0,
+      "average_invalid_extra_docs": 0.0,
+      "correctness_pct": 100.0,
+      "count": 1,
+      "failure_count": 0,
+      "launch_blocking_failures": 0,
+      "question_type": "basic"
+    },
+    {
+      "average_completeness_pct": 75.0,
+      "average_document_recall_pct": 50.0,
+      "average_invalid_extra_docs": 0.0,
+      "correctness_pct": 100.0,
+      "count": 1,
+      "failure_count": 1,
+      "launch_blocking_failures": 0,
+      "question_type": "completeness"
+    },
+    {
+      "average_completeness_pct": 25.0,
+      "average_document_recall_pct": 50.0,
+      "average_invalid_extra_docs": 1.0,
+      "correctness_pct": 0.0,
+      "count": 1,
+      "failure_count": 1,
+      "launch_blocking_failures": 1,
+      "question_type": "conflicting_info"
+    },
+    {
+      "average_completeness_pct": 100.0,
+      "average_document_recall_pct": 0.0,
+      "average_invalid_extra_docs": 0.0,
+      "correctness_pct": 100.0,
+      "count": 1,
+      "failure_count": 0,
+      "launch_blocking_failures": 0,
+      "question_type": "info_not_found"
+    },
+    {
+      "average_completeness_pct": 100.0,
+      "average_document_recall_pct": 100.0,
+      "average_invalid_extra_docs": 1.0,
+      "correctness_pct": 100.0,
+      "count": 1,
+      "failure_count": 0,
+      "launch_blocking_failures": 0,
+      "question_type": "semantic"
+    }
+  ],
+  "comparative": {
+    "aggregate_stats": {
+      "answer_set_1": {
+        "average_completeness_pct": 80.0,
+        "average_extra_docs": 0.4,
+        "average_recall_pct": 75.0
+      },
+      "answer_set_2": {
+        "average_completeness_pct": 70.0,
+        "average_extra_docs": 0.2,
+        "average_recall_pct": 65.0
+      },
+      "completed_questions": 5,
+      "num_corrected_questions": 0,
+      "skipped_rows": 0,
+      "system_1_preferred_pct": 60.0,
+      "system_1_strongly_preferred_pct": 40.0,
+      "system_2_preferred_pct": 40.0,
+      "system_2_strongly_preferred_pct": 20.0,
+      "tie_pct": 40.0,
+      "total_questions": 5
+    },
+    "question_type_stats": {},
+    "system_1": "demo/rag_quality/answers.jsonl",
+    "system_2": "demo/rag_quality/baseline_answers.jsonl"
+  },
+  "failure_count": 2,
+  "failures_by_risk": {
+    "high": 1,
+    "low": 0,
+    "medium": 1
+  },
+  "gate_results": [
+    {
+      "actual": 80.0,
+      "expected": 75.0,
+      "name": "min_correctness_pct",
+      "operator": ">=",
+      "passed": true
+    },
+    {
+      "actual": 80.0,
+      "expected": 75.0,
+      "name": "min_completeness_pct",
+      "operator": ">=",
+      "passed": true
+    },
+    {
+      "actual": 75.0,
+      "expected": 75.0,
+      "name": "min_document_recall_pct",
+      "operator": ">=",
+      "passed": true
+    },
+    {
+      "actual": 0.5,
+      "expected": 0.8,
+      "name": "max_invalid_extra_docs_avg",
+      "operator": "<=",
+      "passed": true
+    },
+    {
+      "actual": 1.0,
+      "expected": 1.0,
+      "name": "max_launch_blocking_failures",
+      "operator": "<=",
+      "passed": true
+    }
+  ],
+  "generated_at": "2026-06-13T09:33:35.267626+00:00",
+  "info_not_found_handling": {
+    "average_completeness_pct": 100.0,
+    "average_document_recall_pct": 0.0,
+    "average_invalid_extra_docs": 0.0,
+    "correctness_pct": 100.0,
+    "count": 1,
+    "failure_count": 0,
+    "launch_blocking_failures": 0,
+    "question_type": "info_not_found"
+  },
+  "inputs": {
+    "answers": "demo/rag_quality/answers.jsonl",
+    "comparative_results": "demo/rag_quality/results-comparative.json",
+    "gates": "quality_gates.yaml",
+    "questions": "demo/rag_quality/questions.jsonl",
+    "results": "demo/rag_quality/results.json"
+  },
+  "launch_status": "pass",
+  "quality_gates": {
+    "launch_thresholds": {
+      "max_invalid_extra_docs_avg": 0.8,
+      "max_launch_blocking_failures": 1,
+      "min_completeness_pct": 75,
+      "min_correctness_pct": 75,
+      "min_document_recall_pct": 75
+    },
+    "risk_rules": {
+      "correctness_is_blocking": true,
+      "launch_blocking_question_types": [
+        "conflicting_info",
+        "info_not_found"
+      ],
+      "max_invalid_extra_docs": 2,
+      "min_completeness_pct": 70,
+      "min_document_recall_pct": 80
+    }
+  }
+}

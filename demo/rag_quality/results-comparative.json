@@ -1,0 +1,27 @@
+{
+  "system_1": "demo/rag_quality/answers.jsonl",
+  "system_2": "demo/rag_quality/baseline_answers.jsonl",
+  "aggregate_stats": {
+    "total_questions": 5,
+    "skipped_rows": 0,
+    "completed_questions": 5,
+    "num_corrected_questions": 0,
+    "system_1_preferred_pct": 60.0,
+    "system_2_preferred_pct": 40.0,
+    "system_1_strongly_preferred_pct": 40.0,
+    "system_2_strongly_preferred_pct": 20.0,
+    "tie_pct": 40.0,
+    "answer_set_1": {
+      "average_completeness_pct": 80.0,
+      "average_recall_pct": 75.0,
+      "average_extra_docs": 0.4
+    },
+    "answer_set_2": {
+      "average_completeness_pct": 70.0,
+      "average_recall_pct": 65.0,
+      "average_extra_docs": 0.2
+    }
+  },
+  "question_type_stats": {},
+  "questions": []
+}

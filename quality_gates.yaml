@@ -1,0 +1,13 @@
+launch_thresholds:
+  min_correctness_pct: 75
+  min_completeness_pct: 75
+  min_document_recall_pct: 75
+  max_invalid_extra_docs_avg: 0.8
+  max_launch_blocking_failures: 1
+
+risk_rules:
+  launch_blocking_question_types: [conflicting_info, info_not_found]
+  correctness_is_blocking: true
+  min_completeness_pct: 70
+  min_document_recall_pct: 80
+  max_invalid_extra_docs: 2

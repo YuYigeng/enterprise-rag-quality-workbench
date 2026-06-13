@@ -1,0 +1,5 @@
+{"question_id":"qst_demo_001","answer":"Audit logs are retained for 365 days.","document_ids":["dsid_audit_policy"]}
+{"question_id":"qst_demo_002","answer":"The onboarding latency dashboard is owned by growth platform.","document_ids":["dsid_latency_owner","dsid_extra_team_note"]}
+{"question_id":"qst_demo_003","answer":"Before launch, review retrieval recall, answer correctness, and support escalation notes.","document_ids":["dsid_launch_checks"]}
+{"question_id":"qst_demo_004","answer":"The documents do not contain the customer's secret discount code.","document_ids":[]}
+{"question_id":"qst_demo_005","answer":"The escalation owner is still the support rotation lead.","document_ids":["dsid_failover_runbook"]}
