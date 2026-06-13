@@ -1,36 +1,27 @@
-# Enterprise RAG Quality Workbench
+# 企业 RAG 质量工作台（Enterprise RAG Quality Workbench）
 
-Portfolio derivative based on [onyx-dot-app/EnterpriseRAG-Bench](https://github.com/onyx-dot-app/EnterpriseRAG-Bench).
-The upstream benchmark evaluates RAG answers against realistic enterprise
-questions. This derivative adds a product layer that turns raw eval artifacts
-into a launch-readiness workflow for enterprise knowledge-base products.
+这是基于 [onyx-dot-app/EnterpriseRAG-Bench](https://github.com/onyx-dot-app/EnterpriseRAG-Bench)
+二次开发的作品项目。上游项目负责评测企业知识库 RAG 的回答质量；我在此基础上补了一层产品化工作台，把原始评测结果转成「是否可以上线」的决策流程。
 
-See [ATTRIBUTION.md](ATTRIBUTION.md) for upstream credit and license notes.
+上游来源、许可证和改动范围见 [ATTRIBUTION.md](ATTRIBUTION.md)。
 
-## What I Added
+## 我新增了什么
 
-- Static product report over `questions.jsonl`, answer JSONL, metrics results,
-  and optional comparative results.
-- Category-level scorecards for correctness, completeness, document recall,
-  invalid extra documents, and info-not-found handling.
-- PM-editable `quality_gates.yaml` for launch thresholds and risk rules.
-- Failure-case CSV and browser report with filters for category, metric, and
-  launch-blocking risk.
-- Demo fixtures and unit tests that run without the full 500k-document corpus.
+- 基于 `questions.jsonl`、回答 JSONL、评测结果和可选对比结果生成静态产品报告。
+- 按问题类别输出正确性、完整性、文档召回、无效额外文档和「找不到信息」处理能力的评分卡。
+- 增加 PM 可编辑的 `quality_gates.yaml`，用于定义上线阈值和风险规则。
+- 输出失败案例 CSV 和浏览器报告，支持按问题类别、失败指标、文档 ID 和上线阻断风险筛选。
+- 提供小型 demo fixtures 和单元测试，不需要下载完整 50 万文档数据集也能运行。
 
-## Product Framing
+## 产品定位
 
-**User:** AI product manager or product lead preparing an enterprise RAG feature
-for rollout.
+**用户：** 准备上线企业知识库 RAG 功能的 AI 产品经理或产品负责人。
 
-**Problem:** Raw benchmark scores are hard to turn into a launch decision. Teams
-need to know which categories fail, whether failures are launch-blocking, and
-which cases need retrieval, answer-generation, or policy changes.
+**问题：** 原始 benchmark 分数很难直接支持上线判断。团队需要知道哪些问题类别失败、哪些失败会阻断上线，以及应该优先修检索、生成还是策略边界。
 
-**Decision support:** The workbench outputs `summary.json` for automation,
-`failure_cases.csv` for review, and `report/index.html` for stakeholder demos.
+**决策支持：** 工作台会输出 `summary.json` 供自动化使用，输出 `failure_cases.csv` 供人工复盘，并生成 `report/index.html` 用于评审和作品展示。
 
-## Run the Demo
+## 运行 Demo
 
 ```bash
 python -m src.scripts.product_report.build_report \
@@ -47,22 +38,19 @@ python -m src.scripts.product_report.check_gates \
   --summary reports/rag-quality/summary.json
 ```
 
-Open `reports/rag-quality/report/index.html` to inspect the scorecards and
-failure drilldown.
+打开 `reports/rag-quality/report/index.html` 查看评分卡和失败案例明细。
 
-## Test
+## 测试
 
 ```bash
 python -m unittest tests/test_product_report.py
 ```
 
-## Limitations
+## 局限性
 
-- The report consumes existing eval artifacts; it does not run retrieval or LLM
-  scoring itself.
-- The demo fixtures are intentionally small and only show the product workflow.
-- Real launch thresholds should be tuned to the product domain, customer risk,
-  and support process.
+- 报告消费已有评测产物，本身不负责运行检索或 LLM 打分。
+- Demo 数据刻意保持很小，只用于展示产品流程。
+- 真实上线阈值需要结合产品领域、客户风险和支持流程重新校准。
 
 ---
 

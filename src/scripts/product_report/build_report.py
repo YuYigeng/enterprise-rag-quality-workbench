@@ -40,6 +40,20 @@ DEFAULT_GATES: dict[str, Any] = {
 }
 
 RISK_RANK = {"high": 0, "medium": 1, "low": 2}
+RISK_LABELS = {"high": "高风险", "medium": "中风险", "low": "低风险"}
+METRIC_LABELS = {
+    "correctness": "正确性",
+    "completeness": "完整性",
+    "document_recall": "文档召回",
+    "invalid_extra_documents": "无效额外文档",
+}
+GATE_LABELS = {
+    "min_correctness_pct": "最低正确性",
+    "min_completeness_pct": "最低完整性",
+    "min_document_recall_pct": "最低文档召回率",
+    "max_invalid_extra_docs_avg": "平均无效额外文档上限",
+    "max_launch_blocking_failures": "上线阻断失败数上限",
+}
 
 
 @dataclass(frozen=True)
@@ -499,14 +513,20 @@ def fmt_pct(value: Any) -> str:
     return f"{safe_float(value):.1f}%"
 
 
+def label_for(mapping: dict[str, str], value: Any) -> str:
+    text = str(value)
+    return mapping.get(text, text)
+
+
 def render_gate_rows(gates: list[dict[str, Any]]) -> str:
     rows = []
     for gate in gates:
         status = "pass" if gate["passed"] else "fail"
+        status_label = "通过" if gate["passed"] else "未通过"
         rows.append(
             "<tr>"
-            f"<td>{html.escape(str(gate['name']))}</td>"
-            f"<td><span class=\"pill {status}\">{status}</span></td>"
+            f"<td>{html.escape(label_for(GATE_LABELS, gate['name']))}</td>"
+            f"<td><span class=\"pill {status}\">{status_label}</span></td>"
             f"<td>{gate['actual']:.2f} {html.escape(gate['operator'])} "
             f"{gate['expected']:.2f}</td>"
             "</tr>"
@@ -539,24 +559,26 @@ def render_failure_rows(rows: list[dict[str, Any]]) -> str:
     out = []
     for row in failures:
         metrics = ", ".join(row["failed_metrics"])
+        metric_labels = ", ".join(label_for(METRIC_LABELS, item) for item in row["failed_metrics"])
         docs = ", ".join(row["retrieved_document_ids"]) or "none"
+        risk = str(row["risk"])
         out.append(
             "<tr "
-            f"data-risk=\"{html.escape(str(row['risk']))}\" "
+            f"data-risk=\"{html.escape(risk)}\" "
             f"data-category=\"{html.escape(str(row.get('question_type') or 'unknown'))}\" "
-            f"data-metrics=\"{html.escape(metrics)}\">"
+            f"data-metrics=\"{html.escape(metrics + ' ' + metric_labels)}\">"
             f"<td>{html.escape(str(row['question_id']))}</td>"
             f"<td>{html.escape(str(row.get('question_type') or 'unknown'))}</td>"
-            f"<td><span class=\"pill {html.escape(str(row['risk']))}\">"
-            f"{html.escape(str(row['risk']))}</span></td>"
-            f"<td>{html.escape(metrics)}</td>"
+            f"<td><span class=\"pill {html.escape(risk)}\">"
+            f"{html.escape(label_for(RISK_LABELS, risk))}</span></td>"
+            f"<td>{html.escape(metric_labels)}</td>"
             f"<td>{fmt_pct(row.get('completeness_pct'))}</td>"
             f"<td>{'N/A' if row.get('document_recall_pct') is None else fmt_pct(row.get('document_recall_pct'))}</td>"
             f"<td>{html.escape(str(row.get('invalid_extra_docs', 'N/A')))}</td>"
-            f"<td><details><summary>Question and answer</summary>"
-            f"<p><strong>Q:</strong> {html.escape(str(row.get('question', '')))}</p>"
-            f"<p><strong>A:</strong> {html.escape(str(row.get('answer', '')))}</p>"
-            f"<p><strong>Docs:</strong> {html.escape(docs)}</p>"
+            f"<td><details><summary>问题与回答</summary>"
+            f"<p><strong>问题：</strong> {html.escape(str(row.get('question', '')))}</p>"
+            f"<p><strong>回答：</strong> {html.escape(str(row.get('answer', '')))}</p>"
+            f"<p><strong>文档：</strong> {html.escape(docs)}</p>"
             "</details></td>"
             "</tr>"
         )
@@ -579,21 +601,21 @@ def write_html_report(path: Path, summary: dict[str, Any], rows: list[dict[str, 
         stats = comparative.get("aggregate_stats", {})
         comparative_html = (
             "<section>"
-            "<h2>Comparative Snapshot</h2>"
+            "<h2>对比快照</h2>"
             "<div class=\"cards\">"
-            f"<div class=\"card\"><span>System 1 preferred</span><strong>{fmt_pct(stats.get('system_1_preferred_pct'))}</strong></div>"
-            f"<div class=\"card\"><span>System 2 preferred</span><strong>{fmt_pct(stats.get('system_2_preferred_pct'))}</strong></div>"
-            f"<div class=\"card\"><span>Tie rate</span><strong>{fmt_pct(stats.get('tie_pct'))}</strong></div>"
+            f"<div class=\"card\"><span>系统 1 胜出</span><strong>{fmt_pct(stats.get('system_1_preferred_pct'))}</strong></div>"
+            f"<div class=\"card\"><span>系统 2 胜出</span><strong>{fmt_pct(stats.get('system_2_preferred_pct'))}</strong></div>"
+            f"<div class=\"card\"><span>打平比例</span><strong>{fmt_pct(stats.get('tie_pct'))}</strong></div>"
             "</div>"
             "</section>"
         )
 
     document = f"""<!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Enterprise RAG Quality Workbench</title>
+    <title>企业 RAG 质量工作台</title>
     <style>
       :root {{
         color-scheme: light;
@@ -692,37 +714,37 @@ def write_html_report(path: Path, summary: dict[str, Any], rows: list[dict[str, 
   </head>
   <body>
     <header>
-      <span class="pill {'pass' if status == 'pass' else 'fail'} status">Launch {html.escape(status)}</span>
-      <h1>Enterprise RAG Quality Workbench</h1>
-      <p>Product-facing scorecards and failure review for EnterpriseRAG-Bench answer evaluation artifacts.</p>
-      <p class="muted">Generated {html.escape(str(summary['generated_at']))}</p>
+      <span class="pill {'pass' if status == 'pass' else 'fail'} status">{'上线通过' if status == 'pass' else '上线未通过'}</span>
+      <h1>企业 RAG 质量工作台</h1>
+      <p>把 EnterpriseRAG-Bench 的回答评测产物转成面向产品决策的评分卡、质量门禁和失败案例复盘。</p>
+      <p class="muted">生成时间 {html.escape(str(summary['generated_at']))}</p>
     </header>
     <main>
       <section>
-        <h2>Launch Scorecard</h2>
+        <h2>上线评分卡</h2>
         <div class="cards">
-          <div class="card"><span>Questions scored</span><strong>{aggregate['completed_questions']}</strong></div>
-          <div class="card"><span>Correctness</span><strong>{fmt_pct(aggregate['average_correctness_pct'])}</strong></div>
-          <div class="card"><span>Completeness</span><strong>{fmt_pct(aggregate['average_completeness_pct'])}</strong></div>
-          <div class="card"><span>Document recall</span><strong>{fmt_pct(aggregate['average_recall_pct'])}</strong></div>
-          <div class="card"><span>Avg invalid extra docs</span><strong>{aggregate['average_invalid_extra_docs']:.2f}</strong></div>
-          <div class="card"><span>Launch-blocking failures</span><strong>{aggregate['launch_blocking_failures']}</strong></div>
+          <div class="card"><span>已评分问题</span><strong>{aggregate['completed_questions']}</strong></div>
+          <div class="card"><span>正确性</span><strong>{fmt_pct(aggregate['average_correctness_pct'])}</strong></div>
+          <div class="card"><span>完整性</span><strong>{fmt_pct(aggregate['average_completeness_pct'])}</strong></div>
+          <div class="card"><span>文档召回</span><strong>{fmt_pct(aggregate['average_recall_pct'])}</strong></div>
+          <div class="card"><span>平均无效额外文档</span><strong>{aggregate['average_invalid_extra_docs']:.2f}</strong></div>
+          <div class="card"><span>上线阻断失败</span><strong>{aggregate['launch_blocking_failures']}</strong></div>
         </div>
       </section>
 
       <section>
-        <h2>Quality Gates</h2>
+        <h2>质量门禁</h2>
         <table>
-          <thead><tr><th>Gate</th><th>Status</th><th>Actual vs threshold</th></tr></thead>
+          <thead><tr><th>门禁</th><th>状态</th><th>实际值 vs 阈值</th></tr></thead>
           <tbody>{render_gate_rows(summary['gate_results'])}</tbody>
         </table>
       </section>
 
       <section>
-        <h2>Category Scorecards</h2>
+        <h2>类别评分卡</h2>
         <table>
           <thead>
-            <tr><th>Category</th><th>Count</th><th>Correctness</th><th>Completeness</th><th>Recall</th><th>Invalid docs</th><th>Blocking</th></tr>
+            <tr><th>类别</th><th>数量</th><th>正确性</th><th>完整性</th><th>召回率</th><th>无效文档</th><th>阻断</th></tr>
           </thead>
           <tbody>{render_category_rows(summary['category_scorecards'])}</tbody>
         </table>
@@ -731,29 +753,29 @@ def write_html_report(path: Path, summary: dict[str, Any], rows: list[dict[str, 
       {comparative_html}
 
       <section>
-        <h2>Failure Drilldown</h2>
+        <h2>失败案例明细</h2>
         <div class="filters">
-          <label>Risk<br />
+          <label>风险<br />
             <select id="riskFilter">
-              <option value="">All</option>
-              <option value="high">High</option>
-              <option value="medium">Medium</option>
-              <option value="low">Low</option>
+              <option value="">全部</option>
+              <option value="high">高风险</option>
+              <option value="medium">中风险</option>
+              <option value="low">低风险</option>
             </select>
           </label>
-          <label>Category<br />
+          <label>类别<br />
             <select id="categoryFilter">
-              <option value="">All</option>
+              <option value="">全部</option>
               {category_options}
             </select>
           </label>
-          <label>Metric contains<br />
-            <input id="metricFilter" placeholder="correctness, recall..." />
+          <label>指标包含<br />
+            <input id="metricFilter" placeholder="正确性、召回、correctness..." />
           </label>
         </div>
         <table id="failures">
           <thead>
-            <tr><th>ID</th><th>Category</th><th>Risk</th><th>Failed metrics</th><th>Completeness</th><th>Recall</th><th>Invalid docs</th><th>Details</th></tr>
+            <tr><th>ID</th><th>类别</th><th>风险</th><th>失败指标</th><th>完整性</th><th>召回率</th><th>无效文档</th><th>详情</th></tr>
           </thead>
           <tbody>{failure_rows}</tbody>
         </table>
